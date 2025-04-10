@@ -1,0 +1,14 @@
+﻿@model List<MessageWeb1.Models.User>
+@{
+    var currentUser = ViewBag.CurrentUser as string;
+}
+<h2>Chọn người để nhắn tin (Bạn: @currentUser)</h2>
+
+<ul>
+    @foreach (var user in Model) {
+        <div>
+            @user.Username
+            <a href="@Url.Action("Index", "Chat", new { toUser = user.Username })">Chat</a>
+        </div>
+    }
+</ul>

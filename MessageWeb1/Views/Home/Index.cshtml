@@ -1,0 +1,46 @@
+﻿<div>
+    <h3>Đăng nhập: <span id="username">@ViewBag.CurrentUser</span></h3>
+    <input type="text" id="receiverInput" placeholder="Nhập User nhận" value="@ViewBag.ToUser" />
+    <input type="text" id="messageInput" placeholder="Nội dung" />
+    <button onclick="sendMessage()">Gửi</button>
+</div>
+
+<ul id="messagesList"></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .build();
+
+    // Nhận tin nhắn từ người khác
+    connection.on("ReceivePrivateMessage", (sender, message) => {
+        addMessage(`${sender}: ${message}`, "received");
+    });
+
+    // Nhận tin nhắn mình gửi (tuỳ chọn)
+    connection.on("ReceiveOwnMessage", (message) => {
+        addMessage(`Bạn: ${message}`, "sent");
+    });
+
+    // Gửi tin nhắn
+    async function sendMessage() {
+        const receiver = document.getElementById("receiverInput").value;
+        const message = document.getElementById("messageInput").value;
+
+        try {
+            await connection.invoke("SendPrivateMessage", receiver, message);
+            document.getElementById("messageInput").value = "";
+        } catch (err) {
+            console.error("Lỗi khi gửi tin nhắn:", err);
+        }
+    }
+
+    // Hiển thị tin nhắn
+    function addMessage(text, type) {
+        const li = document.createElement("li");
+        li.textContent = text;
+        li.className = type;
+        document.getElementById("messagesList").appendChild(li);
+    }
+</script>
