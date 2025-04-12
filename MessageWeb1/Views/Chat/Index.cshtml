@@ -6,219 +6,87 @@
 }
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f0f2f5;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 40px);
-            flex: 1;
-        }
-
-        .chat-header {
-            padding: 15px;
-            background: #4361ee;
-            color: white;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-title {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .receiver-container {
-            background: #f0f2f5;
-            padding: 10px 15px;
-            border-bottom: 1px solid #e4e6eb;
-            display: flex;
-            align-items: center;
-        }
-
-        .receiver-label {
-            margin-right: 10px;
-            font-weight: 500;
-            color: #444;
-        }
-
-        #receiverInput {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            outline: none;
-            transition: border 0.3s;
-        }
-
-            #receiverInput:focus {
-                border-color: #4361ee;
-            }
-
-        .messages-area {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: #f0f2f5;
-        }
-
-        #messagesList {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            list-style-type: none;
-        }
-
-        .message-bubble {
-            max-width: 70%;
-            padding: 10px 15px;
-            border-radius: 18px;
-            position: relative;
-            word-wrap: break-word;
-            line-height: 1.4;
-        }
-
-        .sent {
-            align-self: flex-end;
-            background-color: #4361ee;
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .received {
-            align-self: flex-start;
-            background-color: #e4e6eb;
-            color: #050505;
-            border-bottom-left-radius: 5px;
-        }
-
-        .sender-name {
-            font-size: 12px;
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        .message-time {
-            font-size: 10px;
-            text-align: right;
-            margin-top: 4px;
-            opacity: 0.7;
-        }
-
-        .input-area {
-            display: flex;
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #e4e6eb;
-            border-radius: 0 0 12px 12px;
-        }
-
-        #messageInput {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            outline: none;
-            margin-right: 10px;
-            font-size: 15px;
-            background-color: #f0f2f5;
-            transition: border 0.3s;
-        }
-
-            #messageInput:focus {
-                border-color: #4361ee;
-                background-color: white;
-            }
-
-        .send-button {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .send-button:hover {
-                background-color: #3a56d4;
-            }
-
-            .send-button:disabled {
-                background-color: #cccccc;
-                cursor: not-allowed;
-            }
-
-        /* Typing indicator */
-        .typing-indicator {
-            font-size: 12px;
-            color: #666;
-            margin-left: 10px;
-            font-style: italic;
-            display: none;
-        }
-
-        .typing-active {
-            display: block;
-        }
-    </style>
+    <title>Giao diện Nhắn tin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+    <link href="/css/ScreenMessage.css" rel="stylesheet" />
 </head>
+
 <body>
+    <div class="sidebar">
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm">
+        </div>
+        <div class="tabs">
+            <div class="tab active">Ưu tiên</div>
+            <div class="tab">Khác</div>
+        </div>
+
+
+
+        <div class="conversations">
+            <div class="conversation">
+                <div class="conversation-info">
+                    @foreach (var friend in ViewBag.ListFriend ?? new List<UserContact>()) {
+                        <div class="friend-item">
+                            <div class="friend-avatar">
+                                <img src="@friend.Contact.AvatarUrl" alt="@friend.Contact.Username's avatar" width="40" height="40" />
+                            </div>
+                            <div class="friend-details">
+                                <a href="@Url.Action("Index", "Chat", new { toUser =@friend.Contact.Username })">Chat</a>
+                                <div class="friend-time">Kết bạn lúc @friend.CreatedAt.ToString("dd/MM/yyyy")</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="chat-container">
         <div class="chat-header">
-            <div class="chat-title">Xin chào: <strong>@currentUser</strong></div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Đăng xuất
-            </button>
+            <div class="avatar">
+                <img src="/api/placeholder/48/48" alt="group avatar">
+            
+            </div>
+            <a href="@Url.Action("Logout", "Login")"
+               onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
+                Đăng xuất
+            </a>s
+            <div class="receiver-container">
+                <div class="group-name" >@toUser</div>
+                <input type="text" id="receiverInput" value="@toUser" hidden />
+                <div class="group-members">
+                    @{
+                        bool isOnline = ViewBag.ToUserOnline ?? false;
+                        DateTime? lastSeen = ViewBag.ToUserLastSeen as DateTime?;
+
+                        if (isOnline) {
+                            <span style="color: green;">🟢 Online</span>
+                        }
+                        else if (lastSeen.HasValue) {
+                            <span style="color: gray;">🕒 Last seen: @lastSeen.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else {
+                            <span style="color: gray;">⚪ Offline</span>
+                        }
+                    } 
+
+                </div>
+            </div>
+     
         </div>
 
-        <div class="receiver-container">
-            <label class="receiver-label">Gửi đến:</label>
-            <input type="text" id="receiverInput" value="@toUser" placeholder="Nhập tên người nhận" />
-        </div>
-
-        <div class="messages-area">
+        <div class="messages-area" style="height: 300px; overflow-y: auto;">
             <ul id="messagesList">
                 @foreach (var msg in ViewBag.Conversation ?? new List<Message>()) {
-                    <li class="message-bubble @(msg.Sender.Username == currentUser ? "sent" : "received")">
-                        <div class="sender-name">@(msg.Sender.Username == currentUser ? "Bạn" : msg.Sender.Username)</div>
+                    <li class="message-bubble @(msg.Sender.Username == currentUser ? " sent" : "received" )">
+                        <div class="sender-name">
+                            @(msg.Sender.Username == currentUser ? "Bạn" : msg.Sender.Username)
+                        </div>
                         @msg.Content
                         <div class="message-time">@msg.SentAt.ToString("HH:mm")</div>
                     </li>
@@ -236,7 +104,16 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
-    <script>
+    <script> 
+
+            // Logout function
+        function logout() {
+            if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                console.log("Cop cai lol");
+                window.location.href = "/Login/Logout";
+            }
+        }
+        window.onload = scrollToBottom;
         // SignalR Connection
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
@@ -274,7 +151,7 @@
         startConnection();
 
         // Send message when Enter is pressed
-        messageInput.addEventListener("keypress", function(event) {
+        messageInput.addEventListener("keypress", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
                 sendMessage();
@@ -375,12 +252,6 @@
             }
         }
 
-        // Logout function
-        function logout() {
-            if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-                window.location.href = "/Login/Logout";
-            }
-        }
 
         // Typing indicator - send when user is typing
         let lastTypingTime = 0;
@@ -395,6 +266,11 @@
                 lastTypingTime = now;
             }
         });
+   
+
+    
+
     </script>
 </body>
+
 </html>

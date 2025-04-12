@@ -38,7 +38,7 @@ namespace MessageWeb1.Controllers
 
             // Nếu không có người nhận, chuyển đến trang chọn người nhận
             if (string.IsNullOrEmpty(toUser)) {
-                return RedirectToAction("SelectUser");
+                return RedirectToAction("Index");
             }
 
             // Tìm thông tin người dùng
@@ -47,6 +47,11 @@ namespace MessageWeb1.Controllers
 
             var toUserEntity = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == toUser);
+
+            var listFriend = await _context.UserContacts
+                .Where(uc => uc.UserId == currentUserEntity.UserId)
+                .Include(uc => uc.Contact) // lấy thông tin người bạn
+                .ToListAsync();
 
             if (currentUserEntity == null || toUserEntity == null) {
                 return NotFound("Không tìm thấy người dùng");
@@ -74,7 +79,10 @@ namespace MessageWeb1.Controllers
             // Truyền dữ liệu qua ViewBag
             ViewBag.CurrentUser = currentUser;
             ViewBag.ToUser = toUser;
+            ViewBag.ToUserOnline = toUserEntity.IsOnline;
+            ViewBag.ToUserLastSeen = toUserEntity.LastSeen;
             ViewBag.Conversation = messages;
+            ViewBag.ListFriend = listFriend;
 
             return View();
         }

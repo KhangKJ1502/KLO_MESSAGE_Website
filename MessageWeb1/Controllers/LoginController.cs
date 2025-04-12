@@ -21,7 +21,7 @@ namespace MessageWeb1.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string returnUrl = "/Chat/SelectUser")
+        public IActionResult Index(string returnUrl = "/Chat/Index")
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -81,7 +81,7 @@ namespace MessageWeb1.Controllers
 
             // Điều hướng đến trang mặc định nếu returnUrl không hợp lệ
             if (!Url.IsLocalUrl(returnUrl)) {
-                returnUrl = "/Chat/SelectUser";
+                returnUrl = "/Chat/Index";
             }
 
             return Redirect(returnUrl);

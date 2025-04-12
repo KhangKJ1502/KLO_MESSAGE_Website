@@ -12,6 +12,8 @@ using System;
 // Thêm using
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using MessageWeb1.Controllers;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MessageWeb1
 {
@@ -44,7 +46,8 @@ namespace MessageWeb1
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Login/Index";
-                });
+                }); 
+
 
             var app = builder.Build();
 
@@ -62,6 +65,13 @@ namespace MessageWeb1
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //            action là tên method trong controller.
+
+            //Route mặc định { controller = Chat}/{ action = Index}
+            //            nghĩa là:
+
+            //Nếu không ghi cụ thể, hệ thống sẽ gọi:
+            //ChatController.Index().
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Chat}/{action=Index}");
