@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null;
+    Layout = User.Identity.IsAuthenticated ? "_LayoutOutSide" : "_LayoutOutSide";
 }
 
 <!DOCTYPE html>
@@ -138,7 +138,8 @@
         </form>
 
         <div class="footer">
-            Chưa có tài khoản? <a href="/Register">Đăng ký ngay</a>
+            Chưa có tài khoản? <a href="@Url.Action("Register", "Login")">Đăng ký ngay</a>
+
         </div>
     </div>
 </body>

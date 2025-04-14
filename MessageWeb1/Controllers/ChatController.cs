@@ -16,17 +16,11 @@ namespace MessageWeb1.Controllers
             _context = context;
         }
         // ChatController.cs
- 
-            [HttpGet]
-            public IActionResult Login()
-            {
-                return RedirectToAction("Index", "Login"); // chuyển hướng về LoginController
-            }
 
-
+        [HttpGet]
         public async Task<IActionResult> Index(string toUser)
         {
-            // Kiểm tra đăng nhập
+            // Existing authentication code...
             var currentUser = HttpContext.Session.GetString("Username");
             if (string.IsNullOrEmpty(currentUser)) {
                 var returnUrl = string.IsNullOrEmpty(toUser)
@@ -36,12 +30,12 @@ namespace MessageWeb1.Controllers
                 return RedirectToAction("Index", "Login", new { returnUrl });
             }
 
-            // Nếu không có người nhận, chuyển đến trang chọn người nhận
+            // Existing user lookup code...
             if (string.IsNullOrEmpty(toUser)) {
-                return RedirectToAction("Index");
+                return RedirectToAction("SelectUser");
             }
 
-            // Tìm thông tin người dùng
+            // Find user information
             var currentUserEntity = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == currentUser);
 
@@ -50,22 +44,22 @@ namespace MessageWeb1.Controllers
 
             var listFriend = await _context.UserContacts
                 .Where(uc => uc.UserId == currentUserEntity.UserId)
-                .Include(uc => uc.Contact) // lấy thông tin người bạn
+                .Include(uc => uc.Contact)
                 .ToListAsync();
 
             if (currentUserEntity == null || toUserEntity == null) {
                 return NotFound("Không tìm thấy người dùng");
             }
 
-            // Tìm conversation giữa hai người dùng
+            // Find conversation between the two users
             var conversation = await _context.Conversations
-      .Where(c => c.ConversationType == "private" &&
-                  c.ConversationMembers.Count == 2 &&
-                  c.ConversationMembers.Any(cm => cm.UserId == currentUserEntity.UserId) &&
-                  c.ConversationMembers.Any(cm => cm.UserId == toUserEntity.UserId))
-      .FirstOrDefaultAsync();
+                .Where(c => c.ConversationType == "private" &&
+                            c.ConversationMembers.Count == 2 &&
+                            c.ConversationMembers.Any(cm => cm.UserId == currentUserEntity.UserId) &&
+                            c.ConversationMembers.Any(cm => cm.UserId == toUserEntity.UserId))
+                .FirstOrDefaultAsync();
 
-            // Lấy tin nhắn để hiển thị
+            // Get messages to display
             var messages = new List<Message>();
 
             if (conversation != null) {
@@ -76,9 +70,11 @@ namespace MessageWeb1.Controllers
                     .ToListAsync();
             }
 
-            // Truyền dữ liệu qua ViewBag
+            // Pass data via ViewBag
             ViewBag.CurrentUser = currentUser;
+            ViewBag.CurrentUserAvatar = currentUserEntity.AvatarUrl ?? "/Image/b55138a4-1adb-4a77-bc4d-7ac35be450e6.png\"";
             ViewBag.ToUser = toUser;
+            ViewBag.ToUserAvatar = toUserEntity.AvatarUrl ?? "/Image/b55138a4-1adb-4a77-bc4d-7ac35be450e6.png\"";
             ViewBag.ToUserOnline = toUserEntity.IsOnline;
             ViewBag.ToUserLastSeen = toUserEntity.LastSeen;
             ViewBag.Conversation = messages;

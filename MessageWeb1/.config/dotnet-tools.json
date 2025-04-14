@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-ef": {
+      "version": "9.0.4",
+      "commands": [
+        "dotnet-ef"
+      ],
+      "rollForward": false
+    }
+  }
+} 
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <system.web>
+    <authentication mode="None" />
+    <authorization>
+      <allow users="*" />
+    </authorization>
+  </system.web>
+
+  <system.webServer>
+    <handlers>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+    </handlers>
+    <aspNetCore processPath="dotnet" arguments=".\MessageWeb1.dll" stdoutLogEnabled="true" stdoutLogFile=".\logs\stdout" hostingModel="inprocess">
+      <environmentVariables>
+        <environmentVariable name="ASPNETCORE_ENVIRONMENT" value="Development" />
+      </environmentVariables>
+    </aspNetCore>
+  </system.webServer>
+</configuration>

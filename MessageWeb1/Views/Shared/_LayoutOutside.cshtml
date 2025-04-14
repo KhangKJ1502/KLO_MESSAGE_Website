@@ -3,46 +3,48 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ChatBox</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MessageWeb1.styles.css" asp-append-version="true" />
+    <title>ChatBox - Kết nối mọi lúc, mọi nơi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
         :root {
             --primary-color: #4e73df;
             --secondary-color: #f8f9fc;
             --text-color: #555;
-            --header-height: 60px;
-            --footer-height: 50px;
+            --header-height: 70px;
+            --footer-height: 60px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: var(--header-height);
-            padding-bottom: var(--footer-height);
             background-color: #f4f7fa;
             color: var(--text-color);
             min-height: 100vh;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header styles */
-        .chat-header {
+        .landing-header {
             height: var(--header-height);
             background-color: white;
-            border-bottom: 1px solid #e3e6f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            display: flex;
-            align-items: center;
         }
 
         .header-container {
-            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -55,13 +57,13 @@
         }
 
         .header-logo-img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             margin-right: 10px;
         }
 
         .header-logo-text {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-color);
         }
@@ -72,88 +74,88 @@
         }
 
         .header-nav-item {
-            margin-left: 10px;
-            padding: 8px 12px;
-            border-radius: 20px;
+            margin-left: 20px;
             color: var(--text-color);
-            transition: all 0.2s;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
             .header-nav-item:hover {
-                background-color: var(--secondary-color);
                 color: var(--primary-color);
             }
 
-            .header-nav-item.active {
-                background-color: var(--primary-color);
-                color: white;
+        .header-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+            margin-right: 15px;
+        }
+
+            .btn-outline:hover {
+                background-color: rgba(78, 115, 223, 0.1);
             }
 
-        .header-profile {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-notifications {
-            position: relative;
-            margin-right: 20px;
-            cursor: pointer;
-        }
-
-        .notifications-icon {
-            font-size: 1.3rem;
-            color: #777;
-        }
-
-        .notifications-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #e74a3b;
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .header-user {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .header-user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            margin-right: 10px;
+        .btn-primary {
             background-color: var(--primary-color);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            border: 1px solid var(--primary-color);
         }
 
-        .header-user-name {
-            font-weight: 600;
-            margin-right: 5px;
-        }
+            .btn-primary:hover {
+                background-color: #3a5ecc;
+            }
 
-        .header-toggle-btn {
+        .mobile-menu-toggle {
             display: none;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--text-color);
             cursor: pointer;
         }
 
+        /* Main content placeholder */
+        .main-content {
+            padding-top: var(--header-height);
+            padding-bottom: var(--footer-height);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .placeholder-content {
+            padding: 50px 20px;
+        }
+
+            .placeholder-content h1 {
+                font-size: 2.5rem;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+            }
+
+            .placeholder-content p {
+                font-size: 1.2rem;
+                max-width: 600px;
+                margin: 0 auto 30px;
+            }
+
         /* Footer styles */
-        .chat-footer {
+        .landing-footer {
             height: var(--footer-height);
             background-color: white;
             border-top: 1px solid #e3e6f0;
@@ -161,17 +163,16 @@
             bottom: 0;
             left: 0;
             right: 0;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 900;
         }
 
         .footer-container {
-            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 20px;
         }
 
         .footer-copyright {
@@ -216,22 +217,15 @@
                 color: var(--primary-color);
             }
 
-        /* Main content container */
-        .main-container {
-            padding: 20px;
-            min-height: calc(100vh - var(--header-height) - var(--footer-height));
-        }
-
-        /* Responsive */
-       
+    
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="chat-header">
+    <!-- Header trước khi đăng nhập -->
+    <header class="landing-header">
         <div class="header-container">
             <div class="header-logo">
-                <div class="header-toggle-btn">
+                <div class="mobile-menu-toggle">
                     <i class="fas fa-bars"></i>
                 </div>
                 <img src="/Image/ChatGPT Image 15_19_08 14 thg 4, 2025.png" alt="Logo" class="header-logo-img" />
@@ -239,22 +233,16 @@
             </div>
 
             <nav class="header-nav">
-                <a href="#" class="header-nav-item active">Tin nhắn</a>
-                <a href="#" class="header-nav-item">Bạn bè</a>
-                <a href="#" class="header-nav-item">Nhóm</a>
-                <a href="#" class="header-nav-item">Khám phá</a>
+                <a href="#" class="header-nav-item">Trang chủ</a>
+                <a href="#" class="header-nav-item">Tính năng</a>
+                <a href="#" class="header-nav-item">Giá cả</a>
+                <a href="#" class="header-nav-item">Giới thiệu</a>
+                <a href="#" class="header-nav-item">Liên hệ</a>
             </nav>
 
-            <div class="header-profile">
-                <div class="header-notifications">
-                    <i class="fas fa-bell notifications-icon"></i>
-                    <div class="notifications-badge">3</div>
-                </div>
-                <div class="header-user">
-                    <div class="header-user-avatar">TN</div>
-                    <div class="header-user-name">Trần Nam</div>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
+            <div class="header-buttons">
+                <a href="/Chat/Index" class="btn btn-outline">Log In</a>
+                <a href="@Url.Action("Register", "Login")" class="btn btn-primary">Register</a>
             </div>
         </div>
     </header>
@@ -262,18 +250,18 @@
     <!-- Main content placeholder -->
     <div class="main-container">
         @RenderBody()
-    </div>
+    </div> 
 
-    <!-- Footer -->
-    <footer class="chat-footer">
+    <!-- Footer trước khi đăng nhập -->
+    <footer class="landing-footer">
         <div class="footer-container">
             <div class="footer-copyright">
-                &copy; 2025 - ChatBox Messaging - All rights reserved
+                &copy; 2025 - KLO Messaging - All rights reserved
             </div>
 
             <nav class="footer-nav">
-                <a href="#" class="footer-nav-item">Điều khoản</a>
-                <a href="#" class="footer-nav-item">Chính sách</a>
+                <a href="#" class="footer-nav-item">Điều khoản sử dụng</a>
+                <a href="#" class="footer-nav-item">Chính sách bảo mật</a>
                 <a href="#" class="footer-nav-item">Trợ giúp</a>
                 <a href="#" class="footer-nav-item">Liên hệ</a>
             </nav>
@@ -287,17 +275,18 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Toggle mobile menu
-            $('.header-toggle-btn').click(function() {
-                $('.header-nav').toggleClass('show');
-            });
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const headerNav = document.querySelector('.header-nav');
+
+            if (menuToggle && headerNav) {
+                menuToggle.addEventListener('click', function() {
+                    headerNav.classList.toggle('show');
+                });
+            }
         });
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

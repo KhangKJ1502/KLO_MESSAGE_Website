@@ -55,6 +55,12 @@ namespace MessageWeb1
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            var env = builder.Environment;
+
+
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage(); // bật để xem lỗi cụ thể
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -65,6 +71,7 @@ namespace MessageWeb1
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             //            action là tên method trong controller.
 
             //Route mặc định { controller = Chat}/{ action = Index}
@@ -73,8 +80,9 @@ namespace MessageWeb1
             //Nếu không ghi cụ thể, hệ thống sẽ gọi:
             //ChatController.Index().
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Chat}/{action=Index}");
+          name: "default",
+          pattern: "{controller=ScreenQR}/{action=Index}");
+
 
             app.MapHub<ChatHub>("/chatHub");
 

@@ -1,3 +1,4 @@
 ﻿@{
-    Layout = "_Layout";
+    // Đặt layout dựa trên trạng thái đăng nhập hoặc biến điều kiện nào đó
+    Layout = User.Identity.IsAuthenticated ? "_Layout" : "_LayoutOutSide";
 }

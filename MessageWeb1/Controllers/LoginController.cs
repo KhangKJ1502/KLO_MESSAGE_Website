@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MessageWeb1.Controllers
 {
@@ -105,6 +106,7 @@ namespace MessageWeb1.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
 
+            // ✅ Chuyển về trang login
             return RedirectToAction("Index", "Login");
         }
 
@@ -122,5 +124,13 @@ namespace MessageWeb1.Controllers
                 return builder.ToString();
             }
         }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+
     }
 }
